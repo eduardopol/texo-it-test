@@ -15,7 +15,7 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    public MinMaxIntervalWinnersResponse getAllMovies() {
+    public MinMaxIntervalWinnersResponse getBiggestAndSmallest() {
         List<Movie> winners = movieRepository.findMoviesByWinnerOrderByYearAsc("yes");
 
         HashMap<String, List<Integer>> winningProducers = new HashMap<>();
@@ -75,18 +75,19 @@ public class MovieService {
                     min.add(new WinnerResponse(producer, difference, previousYear, year));
                 }
 
+                if (previousYear != 0) {
+                    difference = maxYear - previousYear;
+                    if (difference == maxWinner) {
+                        max.add(new WinnerResponse(producer, difference, previousYear, maxYear));
+                    }
+                    if (difference > maxWinner) {
+                        maxWinner = difference;
+
+                        max = new ArrayList<>();
+                        max.add(new WinnerResponse(producer, difference, previousYear, maxYear));
+                    }
+                }
                 previousYear = year;
-            }
-
-            difference = maxYear - minYear;
-            if (difference == maxWinner) {
-                max.add(new WinnerResponse(producer, difference, minYear, maxYear));
-            }
-            if (difference > maxWinner) {
-                maxWinner = difference;
-
-                max = new ArrayList<>();
-                max.add(new WinnerResponse(producer, difference, minYear, maxYear));
             }
 
 
