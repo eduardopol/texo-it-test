@@ -19,7 +19,7 @@ public class ProducerController {
 
     @GetMapping("/biggest-smallest-winning-interval")
     public ResponseEntity<MinMaxIntervalWinnersResponse> getAllMovies() {
-        return ResponseEntity.ok(movieService.getAllMovies());
+        return ResponseEntity.ok(movieService.getBiggestAndSmallest());
     }
 
 
